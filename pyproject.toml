@@ -1,0 +1,69 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "websearch-py"
+version = "0.1.0"
+description = "Lightweight web search and extraction utilities for programmatic use."
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Impossibum", email = "impossibum@users.noreply.github.com"}
+]
+keywords = [
+    "web-search",
+    "search",
+    "bing",
+    "duckduckgo",
+    "google",
+    "web-scraping",
+    "content-extraction",
+    "ai-agents",
+    "llm-tools",
+    "playwright",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "beautifulsoup4>=4.9",
+    "requests>=2.20",
+    "duckduckgo-search>=7",
+]
+
+[project.optional-dependencies]
+bing = ["playwright>=1.40"]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-mock>=3.12.0",
+    "build>=1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/impossibum/websearch"
+Repository = "https://github.com/impossibum/websearch"
+Issues = "https://github.com/impossibum/websearch/issues"
+Changelog = "https://github.com/impossibum/websearch/releases"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["websearch*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
