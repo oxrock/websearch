@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
 authors = [
-    {name = "Impossibum", email = "impossibum@users.noreply.github.com"}
+    {name = "oxrock", email = "oxrock@users.noreply.github.com"}
 ]
 keywords = [
     "web-search",
@@ -53,10 +53,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/impossibum/websearch"
-Repository = "https://github.com/impossibum/websearch"
-Issues = "https://github.com/impossibum/websearch/issues"
-Changelog = "https://github.com/impossibum/websearch/releases"
+Homepage = "https://github.com/oxrock/websearch"
+Repository = "https://github.com/oxrock/websearch"
+Issues = "https://github.com/oxrock/websearch/issues"
+Changelog = "https://github.com/oxrock/websearch/releases"
 
 [tool.setuptools.packages.find]
 where = ["src"]
