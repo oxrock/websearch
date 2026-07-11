@@ -2,7 +2,7 @@
 
 Lightweight, installable Python package for programmatic web search and content extraction.
 
-`websearch` gives you three functions you can drop into agent workflows, scripts, or notebooks: a multi-backend web search (Bing via Playwright, DuckDuckGo, or Google Custom Search), a readable-text extractor for arbitrary URLs, and a timeout-bounded shell command runner. No heavy dependencies by default — only Playwright (for the Bing backend) is opt-in.
+`websearch` gives you three functions you can drop into agent workflows, scripts, or notebooks: a multi-backend web search (Bing via Playwright, DuckDuckGo, or Google Custom Search), a readable-text extractor for arbitrary URLs, and a timeout-bounded shell command runner. All backends are installed by default — no extras needed.
 
 ## Features
 
@@ -21,9 +21,14 @@ pip install -e .
 
 # With dev dependencies (pytest, build, etc.)
 pip install -e ".[dev]"
+
+# One-time setup: download the Chromium browser binary for the Bing backend
+playwright install chromium
 ```
 
 > **Distribution name vs. import name:** The package is distributed on PyPI as `websearch-py` (the bare `websearch` name was already registered by another project), but the import name is still `websearch`. So you `pip install websearch-py` and then `from websearch import web_search, ...` — only the `pip install` side uses the `-py` suffix.
+
+> **Why `playwright install chromium`?** The `playwright` Python library is installed automatically by `pip install websearch-py`, but the Chromium browser binary it drives (~150 MB) is downloaded separately. This is a Playwright design constraint — browser binaries are too large to ship inside a pip package. Run `playwright install chromium` once per machine after the pip install.
 
 ## Quick Start
 
@@ -34,7 +39,7 @@ from websearch import web_search, web_extract, execute_system_command
 results = web_search("python asyncio tutorial", max_results=5)
 print(results)  # JSON string with query, backend, and results list
 
-# Switch to DuckDuckGo backend (free, no key, no extra deps)
+# Switch to DuckDuckGo backend (free, no key, no browser download needed)
 results = web_search("rust vs go", backend="duckduckgo", region="us-en")
 
 # Search with Google Custom Search API instead
@@ -55,14 +60,15 @@ print(output)
 
 ## Bing (Playwright) Setup
 
-To use `backend="bing"` (the default) you need Playwright with a Chromium browser installed:
+The `backend="bing"` default uses Playwright with a headless Chromium browser. The `playwright` Python library is installed automatically with `websearch-py`, but you also need to download the Chromium browser binary:
 
 ```bash
-pip install "websearch-py[bing]"
 playwright install chromium
 ```
 
-Run `playwright install chromium` once per machine. Bing via Playwright is free and needs no API keys or accounts.
+Run this once per machine. Bing via Playwright is free and needs no API keys or accounts.
+
+If you skip this step, calling `web_search(...)` with the default backend will return an error like `Search error (backend=bing): Playwright is not installed...` or fail to launch the browser. You can always use `backend="duckduckgo"` instead, which needs no extra setup.
 
 ## Google Custom Search API Setup
 
@@ -146,11 +152,9 @@ The `web_search` and `web_extract` functions do not have this issue — they onl
 - `beautifulsoup4` (core)
 - `requests` (core)
 - `duckduckgo-search` (core — needed for `backend="duckduckgo"`)
-- `playwright` (optional — only needed for `backend="bing"`; also requires `playwright install chromium`)
+- `playwright` (core — needed for `backend="bing"`; also requires a one-time `playwright install chromium` to download the browser binary)
 
-Core deps install automatically via `pip install websearch-py`. Optional backends:
-
-- `pip install "websearch-py[bing]"` — adds Playwright for `backend="bing"`
+All dependencies install automatically via `pip install websearch-py`. The only manual step is `playwright install chromium` (run once per machine) to enable the Bing backend.
 
 ## Running Tests
 
@@ -192,8 +196,8 @@ After installing (`pip install websearch-py` or adding as a git dependency):
 from websearch import web_search, web_extract, execute_system_command
 
 # Use directly in your codebase
-data = web_search("your query")                        # default: Bing (needs playwright)
-data = web_search("your query", backend="duckduckgo")  # DuckDuckGo (free, no key)
+data = web_search("your query")                        # default: Bing (needs `playwright install chromium` once)
+data = web_search("your query", backend="duckduckgo")  # DuckDuckGo (free, no key, no browser download)
 data = web_search("your query", backend="google")      # Google (needs key)
 text = web_extract("https://example.com")
 cmd_out = execute_system_command("ls -la")             # trusted input only
