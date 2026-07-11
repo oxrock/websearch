@@ -13,6 +13,9 @@ Lightweight, installable Python package for programmatic web search and content 
 ## Installation
 
 ```bash
+# From GitHub (works today)
+pip install git+https://github.com/oxrock/websearch.git@main
+
 # From PyPI once published
 pip install websearch-py
 
@@ -26,9 +29,9 @@ pip install -e ".[dev]"
 playwright install chromium
 ```
 
-> **Distribution name vs. import name:** The package is distributed on PyPI as `websearch-py` (the bare `websearch` name was already registered by another project), but the import name is still `websearch`. So you `pip install websearch-py` and then `from websearch import web_search, ...` — only the `pip install` side uses the `-py` suffix.
+> **Distribution name vs. import name:** The package will be distributed on PyPI as `websearch-py` (the bare `websearch` name was already registered by another project), but the import name is `websearch`. So you `pip install websearch-py` and then `from websearch import web_search, ...` — only the `pip install` side uses the `-py` suffix. The git install (above) doesn't care about the PyPI name — it just clones and builds.
 
-> **Why `playwright install chromium`?** The `playwright` Python library is installed automatically by `pip install websearch-py`, but the Chromium browser binary it drives (~150 MB) is downloaded separately. This is a Playwright design constraint — browser binaries are too large to ship inside a pip package. Run `playwright install chromium` once per machine after the pip install.
+> **Why `playwright install chromium`?** The `playwright` Python library is installed automatically by `pip install`, but the Chromium browser binary it drives (~150 MB) is downloaded separately. This is a Playwright design constraint — browser binaries are too large to ship inside a pip package. Run `playwright install chromium` once per machine after the pip install.
 
 ## Quick Start
 
@@ -190,7 +193,7 @@ websearch/
 
 ## Importing in External Projects
 
-After installing (`pip install websearch-py` or adding as a git dependency):
+After installing (`pip install git+https://github.com/oxrock/websearch.git@main` today, or `pip install websearch-py` once published on PyPI):
 
 ```python
 from websearch import web_search, web_extract, execute_system_command
